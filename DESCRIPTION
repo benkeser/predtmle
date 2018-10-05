@@ -5,10 +5,10 @@ Authors@R: person("David", "Benkeser", email = "benkeser@emory.edu", role = c("a
 Description: Cross-validated estimates of and inference for prediction metrics based on cross-validated targeted minimum loss-based estimation, estimating equations, and one-step estimation. (TO DO: add citations)
 Depends: 
 	R (>= 3.2.0),
+	data.table
+Imports:
 	SuperLearner,
 	cvAUC,
-	data.table
-Suggests:
 	ROCR,
 	Rdpack,
 	bde,
