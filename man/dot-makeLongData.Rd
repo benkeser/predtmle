@@ -35,7 +35,7 @@ the training sample for obs. with Y = 0),
 Yi (this observation's value of Y), Fn (estimated value of the cdf of psi(X) 
 given Y = Yi in the training sample), 
 dFn (estimated value of the density of psi(X) given Y = (1-Yi) in the 
-training sample), psi (the value of this observations \hat{\Psi}(P_{n,B_n}^0)),
+training sample), psi (the value of this observations Psihat(P_{n,B_n}^0)),
 gn (estimate of marginal of Y e.g., computed in whole sample), outcome (indicator
 that psix <= u), logit_Fn (the cdf estimate on the logit scale, needed for 
 offset in targeting model).
