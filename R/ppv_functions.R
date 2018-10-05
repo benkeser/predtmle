@@ -270,12 +270,12 @@ cv_scrnp <- function(Y, X, K = 10, sens = 0.95,
     # get predictions for this fold
     inner_pred <- z$test_pred[inner_valid_idx]
     inner_y <- z$test_y[inner_valid_idx]
-    return(list(inner_test_pred = inner_pred, inner_test_y = inner_y))
+    return(list(test_pred = inner_pred, inner_test_y = inner_y))
   })
 
   # now get all values of psi from inner validation with Y = 1
   train_psi_1 <- unlist(lapply(inner_valid_prediction_and_y_list, function(z){
-    z$inner_test_pred[z$inner_test_y == 1]    
+    z$test_pred[z$inner_test_y == 1]    
   }), use.names = FALSE)
 
   # get the quantile
@@ -349,10 +349,10 @@ cv_scrnp <- function(Y, X, K = 10, sens = 0.95,
       # get predictions for this fold
       inner_pred <- z$test_pred[inner_valid_idx]
       inner_y <- z$test_y[inner_valid_idx]
-      return(list(inner_test_pred = inner_pred, inner_test_y = inner_y))
+      return(list(test_pred = inner_pred, inner_test_y = inner_y))
     })
     all_pred <- Reduce("c", lapply(inner_valid_prediction_and_y_list, "[[",
-                                   "inner_test_pred"))
+                                   "test_pred"))
     all_y <- Reduce("c", lapply(inner_valid_prediction_and_y_list, "[[",
                                    "inner_test_y"))
     if(bounded_kernel){
@@ -453,7 +453,7 @@ cv_scrnp <- function(Y, X, K = 10, sens = 0.95,
       # get predictions for this fold
       inner_pred <- z$test_pred[inner_valid_idx]
       inner_y <- z$test_y[inner_valid_idx]
-      return(list(inner_test_pred = inner_pred, inner_test_y = inner_y))
+      return(list(test_pred = inner_pred, inner_test_y = inner_y))
     })
     
     Y_vec <- Reduce(c, lapply(prediction_list[x], "[[", "test_y"))

@@ -1,0 +1,50 @@
+test_that("wrappers work", {
+	set.seed(123)
+	n <- 50
+	p <- 1
+	X <- data.frame(matrix(rnorm(n*p), nrow = n, ncol = p))
+	Y <- rbinom(n, 1, plogis(X[,1]))
+
+	test <- train <- list(X = X, Y = Y)
+	test_sl <- superlearner_wrapper(train, test)
+	expect_true(all(c("test_pred","train_pred","model","train_y","test_y") %in% names(test_sl)))
+	expect_true(is.numeric(test_sl$test_pred))
+	expect_true(is.numeric(test_sl$train_pred))
+	expect_true(length(test_sl$train_pred) == length(test_sl$train_y))
+	expect_true(length(test_sl$test_pred) == length(test_sl$test_y))
+
+	test_rf <- randomforest_wrapper(train, test)
+	expect_true(all(c("test_pred","train_pred","model","train_y","test_y") %in% names(test_rf)))
+	expect_true(is.numeric(test_rf$test_pred))
+	expect_true(is.numeric(test_rf$train_pred))
+	expect_true(length(test_rf$train_pred) == length(test_rf$train_y))
+	expect_true(length(test_rf$test_pred) == length(test_rf$test_y))
+
+	test_ranger <- ranger_wrapper(train, test)
+	expect_true(all(c("test_pred","train_pred","model","train_y","test_y") %in% names(test_ranger)))
+	expect_true(is.numeric(test_ranger$test_pred))
+	expect_true(is.numeric(test_ranger$train_pred))
+	expect_true(length(test_ranger$train_pred) == length(test_ranger$train_y))
+	expect_true(length(test_ranger$test_pred) == length(test_ranger$test_y))
+
+	test_glm <- glm_wrapper(train, test)
+	expect_true(all(c("test_pred","train_pred","model","train_y","test_y") %in% names(test_glm)))
+	expect_true(is.numeric(test_glm$test_pred))
+	expect_true(is.numeric(test_glm$train_pred))
+	expect_true(length(test_glm$train_pred) == length(test_glm$train_y))
+	expect_true(length(test_glm$test_pred) == length(test_glm$test_y))
+	
+	test_stepglm <- stepglm_wrapper(train, test)
+	expect_true(all(c("test_pred","train_pred","model","train_y","test_y") %in% names(test_stepglm)))
+	expect_true(is.numeric(test_stepglm$test_pred))
+	expect_true(is.numeric(test_stepglm$train_pred))
+	expect_true(length(test_stepglm$train_pred) == length(test_stepglm$train_y))
+	expect_true(length(test_stepglm$test_pred) == length(test_stepglm$test_y))
+
+	test_xgboost <- xgboost_wrapper(train, test)
+	expect_true(all(c("test_pred","train_pred","model","train_y","test_y") %in% names(test_xgboost)))
+	expect_true(is.numeric(test_xgboost$test_pred))
+	expect_true(is.numeric(test_xgboost$train_pred))
+	expect_true(length(test_xgboost$train_pred) == length(test_xgboost$train_y))
+	expect_true(length(test_xgboost$test_pred) == length(test_xgboost$test_y))
+})
