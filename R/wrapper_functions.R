@@ -48,8 +48,8 @@ superlearner_wrapper <- function(train, test,
     all_pred <- sl_fit$SL.pred
     ntest <- length(test$Y)
     ntrain <- length(train$Y)
-    train_pred <- all_pred[1:ntest]
-    test_pred <- all_pred[(ntest+1):(ntest+ntrain)]
+    test_pred <- all_pred[1:ntest]
+    train_pred <- all_pred[(ntest+1):(ntest+ntrain)]
     return(list(test_pred = test_pred, train_pred = train_pred,
                 model = sl_fit, train_y = train$Y, test_y = test$Y))
 }
@@ -107,8 +107,8 @@ randomforest_wrapper <- function(train, test,
     all_psi <- rf_fit$test$votes[,2]
     ntest <- length(test$Y)
     ntrain <- length(train$Y)
-    train_pred <- all_psi[1:ntest]
-    test_pred <- all_psi[(ntest+1):(ntest+ntrain)]
+    test_pred <- all_psi[1:ntest]
+    train_pred <- all_psi[(ntest+1):(ntest+ntrain)]
     return(list(test_pred = test_pred, train_pred = train_pred,
                 model = NULL, train_y = train$Y, test_y = test$Y))
 }
@@ -178,8 +178,8 @@ ranger_wrapper <- function(train, test,
     all_psi <- predict(fit, data = pred_data)$predictions[, "1"]
     ntest <- length(test$Y)
     ntrain <- length(train$Y)
-    train_pred <- all_psi[1:ntest]
-    test_pred <- all_psi[(ntest+1):(ntest+ntrain)]
+    test_pred <- all_psi[1:ntest]
+    train_pred <- all_psi[(ntest+1):(ntest+ntrain)]
     return(list(test_pred = test_pred, train_pred = train_pred,
                 model = NULL, train_y = train$Y, test_y = test$Y))
 }
@@ -227,8 +227,8 @@ glm_wrapper <- function(train, test){
     Psi_nBn_0 <- function(x){
       stats::predict(glm_fit, newdata = x, type = "response")
     }
-    test_pred <- Psi_nBn_0(train$X)
-    train_pred <- Psi_nBn_0(test$X)
+    train_pred <- Psi_nBn_0(train$X)
+    test_pred <- Psi_nBn_0(test$X)
     return(list(test_pred = test_pred, train_pred = train_pred,
                 model = NULL, train_y = train$Y, test_y = test$Y))
 }
@@ -276,8 +276,8 @@ stepglm_wrapper <- function(train, test){
     Psi_nBn_0 <- function(x){
       stats::predict(glm_fit, newdata = x, type = "response")
     }
-    test_pred <- Psi_nBn_0(train$X)
-    train_pred <- Psi_nBn_0(test$X)
+    train_pred <- Psi_nBn_0(train$X)
+    test_pred <- Psi_nBn_0(test$X)
     return(list(test_pred = test_pred, train_pred = train_pred,
                 model = glm_fit, train_y = train$Y, test_y = test$Y))
 }
@@ -340,8 +340,8 @@ xgboost_wrapper <- function(test, train, ntrees = 500,
             params = params, save_period = save_period)
     newx <- model.matrix(~. - 1, data = test$X)
 
-    train_pred <- predict(xgboost_fit, newdata = newx)
-    test_pred <- predict(xgboost_fit, newdata = x)
+    test_pred <- predict(xgboost_fit, newdata = newx)
+    train_pred <- predict(xgboost_fit, newdata = x)
 
     return(list(test_pred = test_pred, train_pred = train_pred,
                 model = xgboost_fit, train_y = train$Y, test_y = test$Y))

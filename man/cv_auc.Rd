@@ -11,7 +11,7 @@ cv_auc(Y, X, K = 10, learner = "glm_wrapper", nested_cv = TRUE,
 \arguments{
 \item{Y}{A numeric vector of outcomes, assume to equal \code{0} or \code{1}.}
 
-\item{X}{A \code{data.frame} of variables for prediction.}
+\item{X}{A \code{data.frame} or \code{matrix} of variables for prediction.}
 
 \item{K}{The number of cross-validation folds (default is \code{10}).}
 
@@ -63,5 +63,5 @@ n <- 200
 p <- 10
 X <- matrix(rnorm(n*p), nrow = n, ncol = p)
 Y <- rbinom(n, 1, plogis(X[,1] + X[,10]))
-fit <- cvauc_cvtmle(Y = Y, X = X, K = 5, learner = "glm_wrapper")
+fit <- cv_auc(Y = Y, X = X, K = 5, learner = "glm_wrapper")
 }

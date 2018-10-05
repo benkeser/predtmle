@@ -3,7 +3,7 @@
 #' TO DO: Add description
 #' 
 #' @param Y A numeric vector of outcomes, assume to equal \code{0} or \code{1}.
-#' @param X A \code{data.frame} of variables for prediction.
+#' @param X A \code{data.frame} or \code{matrix} of variables for prediction.
 #' @param K The number of cross-validation folds (default is \code{10}).
 #' @param sens The sensitivity constraint imposed on the rate of negative prediction
 #' (see description).
@@ -50,6 +50,17 @@ cv_scrnp <- function(Y, X, K = 10, sens = 0.95,
                      quantile_type = 8,
                      prediction_list = NULL, 
                      ...){
+  # test inputs
+  assertthat::assert_that(all(Y %in% c(0,1)))
+  assertthat::assert_that(0 < sens & sens < 1)
+  if(!nested_cv){
+    assertthat::assert_that(K > 1)
+  }else{
+    assertthat::assert_that(K > 2)
+    assertthat::assert_that(nested_K > 1)
+  }
+  assertthat::assert_that(exists(learner))
+
   # sample size
   n <- length(Y)
   # make outer cross-validation folds
@@ -402,13 +413,13 @@ cv_scrnp <- function(Y, X, K = 10, sens = 0.95,
     fold_vec_pred <- sort(rep(seq_len(K), 2))
     gn_vec <- gn
     F_nBn_vec <- Reduce(c, mapply(FUN = function(m, c0){
-      F_nBn_y1_at_c0 <- F_nBn_star(psi_x = c0, y = 1, Psi_nBn_0 = m$train_pred, Y_Bn = m$train_y)
-      F_nBn_y0_at_c0 <- F_nBn_star(psi_x = c0, y = 0, Psi_nBn_0 = m$train_pred, Y_Bn = m$train_y)
+      F_nBn_y1_at_c0 <- F_nBn_star(psi_x = c0, y = 1, train_pred = m$train_pred, train_y = m$train_y)
+      F_nBn_y0_at_c0 <- F_nBn_star(psi_x = c0, y = 0, train_pred = m$train_pred, train_y = m$train_y)
       ifelse(m$test_y == 0, F_nBn_y0_at_c0, F_nBn_y1_at_c0)
     }, c0 = quantile_list, m = prediction_list))
     F_nBn_vec_pred <- Reduce(c, mapply(FUN = function(m, c0){
-      F_nBn_y1_at_c0 <- F_nBn_star(psi_x = c0, y = 1, Psi_nBn_0 = m$train_pred, Y_Bn = m$train_y)
-      F_nBn_y0_at_c0 <- F_nBn_star(psi_x = c0, y = 0, Psi_nBn_0 = m$train_pred, Y_Bn = m$train_y)
+      F_nBn_y1_at_c0 <- F_nBn_star(psi_x = c0, y = 1, train_pred = m$train_pred, train_y = m$train_y)
+      F_nBn_y0_at_c0 <- F_nBn_star(psi_x = c0, y = 0, train_pred = m$train_pred, train_y = m$train_y)
       c(F_nBn_y0_at_c0, F_nBn_y1_at_c0)
     }, c0 = quantile_list, m = prediction_list))
 

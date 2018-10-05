@@ -12,7 +12,7 @@
 #' the remaining fold 
 #' 
 #' @param Y A numeric vector of outcomes, assume to equal \code{0} or \code{1}.
-#' @param X A \code{data.frame} of variables for prediction.
+#' @param X A \code{data.frame} or \code{matrix} of variables for prediction.
 #' @param K The number of cross-validation folds (default is \code{10}).
 #' @param learner A wrapper that implements the desired method for building a 
 #' prediction algorithm. See TODO: ADD DOCUMENTATION FOR WRITING 
@@ -37,6 +37,7 @@
 #' @importFrom cvAUC ci.cvAUC
 #' @importFrom stats uniroot
 #' @importFrom Rdpack reprompt
+#' @importFrom assertthat assert_that
 #' @export
 #' @return A list
 #' @examples
@@ -44,7 +45,7 @@
 #' p <- 10
 #' X <- matrix(rnorm(n*p), nrow = n, ncol = p)
 #' Y <- rbinom(n, 1, plogis(X[,1] + X[,10]))
-#' fit <- cvauc_cvtmle(Y = Y, X = X, K = 5, learner = "glm_wrapper")
+#' fit <- cv_auc(Y = Y, X = X, K = 5, learner = "glm_wrapper")
 
 cv_auc <- function(Y, X, K = 10, learner = "glm_wrapper", 
                   nested_cv = TRUE,
@@ -54,6 +55,16 @@ cv_auc <- function(Y, X, K = 10, learner = "glm_wrapper",
                   cvtmle_ictol = 1 / length(Y), 
                   prediction_list = NULL,
                   ...){
+  # test inputs
+  assertthat::assert_that(all(Y %in% c(0,1)))
+  if(!nested_cv){
+    assertthat::assert_that(K > 1)
+  }else{
+    assertthat::assert_that(K > 2)
+    assertthat::assert_that(nested_K > 1)
+  }
+  assertthat::assert_that(exists(learner))
+
   # sample size
   n <- length(Y)
   # make outer cross-validation folds

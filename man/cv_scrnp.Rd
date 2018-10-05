@@ -12,7 +12,7 @@ cv_scrnp(Y, X, K = 10, sens = 0.95, learner = "glm_wrapper",
 \arguments{
 \item{Y}{A numeric vector of outcomes, assume to equal \code{0} or \code{1}.}
 
-\item{X}{A \code{data.frame} of variables for prediction.}
+\item{X}{A \code{data.frame} or \code{matrix} of variables for prediction.}
 
 \item{K}{The number of cross-validation folds (default is \code{10}).}
 

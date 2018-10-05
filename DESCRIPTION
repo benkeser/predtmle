@@ -6,12 +6,12 @@ Description: Cross-validated estimates of and inference for prediction metrics b
 Depends: 
 	R (>= 3.2.0),
 	SuperLearner,
-	cvAUC
+	cvAUC,
+	data.table
 Suggests:
 	ROCR,
 	Rdpack,
 	bde,
-	data.table,
 	np,
 	randomForest,
 	ranger,
