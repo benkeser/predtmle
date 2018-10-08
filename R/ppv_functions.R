@@ -59,7 +59,6 @@ cv_scrnp <- function(Y, X, K = 10, sens = 0.95,
     assertthat::assert_that(K > 2)
     assertthat::assert_that(nested_K > 1)
   }
-  assertthat::assert_that(exists(learner))
 
   # sample size
   n <- length(Y)

@@ -65,7 +65,6 @@ cv_auc <- function(Y, X, K = 10, learner = "glm_wrapper",
     assertthat::assert_that(K > 2)
     assertthat::assert_that(nested_K > 1)
   }
-  assertthat::assert_that(exists(learner))
 
   # sample size
   n <- length(Y)
