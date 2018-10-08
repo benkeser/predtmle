@@ -16,6 +16,8 @@
 
 \item{K}{The number of folds}
 
+\item{folds}{Vector of CV fold assignments}
+
 \item{parallel}{Whether to compute things in parallel using future}
 
 \item{nested_cv}{Is nested CV being used?}
