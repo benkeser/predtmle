@@ -1,5 +1,12 @@
 context("Testing AUC functions")
-
+mySL.mean <- function(train, test){
+  ntrain <- length(train$Y)
+  ntest <- length(test$Y)
+  mtrain_y <- mean(train$Y)
+  return(list(train_y = train$Y, test_y = test$Y,
+         train_pred = rep(mtrain_y, ntrain),
+         test_pred = rep(mtrain_y, ntest)))
+}
 test_that("AUC returns numerics", {
   set.seed(123)
   n <- 50
@@ -21,14 +28,6 @@ test_that("AUC returns numerics", {
 })
 
 test_that("AUC returns 0.5 for SL.mean", {
-  mySL.mean <- function(train, test){
-    ntrain <- length(train$Y)
-    ntest <- length(test$Y)
-    mtrain_y <- mean(train$Y)
-    return(list(train_y = train$Y, test_y = test$Y,
-           train_pred = rep(mtrain_y, ntrain),
-           test_pred = rep(mtrain_y, ntest)))
-  }
   set.seed(123)
   n <- 50
   p <- 1
