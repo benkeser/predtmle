@@ -10,6 +10,8 @@ fluc_mod_optim_1(epsilon, fld, tol = 0.001)
 \item{epsilon}{Fluctuation parameter}
 
 \item{fld}{full_long_data_list}
+
+\item{tol}{Tolerance on predictions close to 0 or 1}
 }
 \value{
 A numeric value of negative log-likelihood

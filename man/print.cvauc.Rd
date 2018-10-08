@@ -10,6 +10,8 @@
 \item{x}{An object of class "cvauc"}
 
 \item{ci_level}{Level of confidence interval to print. Defaults to 0.95.}
+
+\item{...}{Other options (not currently used)}
 }
 \description{
 Print results of cv_auc

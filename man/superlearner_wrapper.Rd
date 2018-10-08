@@ -13,6 +13,8 @@ superlearner_wrapper(train, test, SL.library = c("SL.mean"), ...)
 
 \item{SL.library}{\code{SuperLearner} library. See \link[SuperLearner]{SuperLearner} 
 for further description.}
+
+\item{...}{Other options (passed to \code{SuperLearner})}
 }
 \value{
 A list with named objects (see description).

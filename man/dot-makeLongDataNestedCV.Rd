@@ -13,6 +13,8 @@ CVTMLE targeting step when nested cv is used}
 
 \item{prediction_list}{The full prediction list}
 
+\item{folds}{Vector of CV folds}
+
 \item{gn}{An estimate of the marginal dist. of Y}
 
 \item{update}{Boolean of whether this is called for initial

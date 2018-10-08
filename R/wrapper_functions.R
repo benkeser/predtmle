@@ -20,6 +20,7 @@
 #' @param test A list with named objects \code{Y} and \code{X} (see description).
 #' @param SL.library \code{SuperLearner} library. See \link[SuperLearner]{SuperLearner} 
 #' for further description. 
+#' @param ... Other options (passed to \code{SuperLearner}) 
 #' @return A list with named objects (see description). 
 #' @export
 #' @importFrom SuperLearner SuperLearner 
@@ -44,7 +45,8 @@ superlearner_wrapper <- function(train, test,
     sl_fit <- SuperLearner::SuperLearner(Y = train$Y, 
                                          X = train$X, SL.library = SL.library,
                                          newX = rbind(test$X,train$X),
-                                         family = binomial(), verbose = FALSE)
+                                         family = stats::binomial(), verbose = FALSE,
+                                         ...)
     all_pred <- sl_fit$SL.pred
     ntest <- length(test$Y)
     ntrain <- length(train$Y)
@@ -79,6 +81,7 @@ superlearner_wrapper <- function(train, test,
 #' @param nodesize See \link[randomForest]{randomForest}.
 #' @param maxnodes See \link[randomForest]{randomForest}.
 #' @param importance See \link[randomForest]{randomForest}.
+#' @param ... Other options (passed to \code{randomForest}) 
 #' @return A list with named objects (see description). 
 #' @export
 #' @importFrom randomForest randomForest 
@@ -141,6 +144,7 @@ randomforest_wrapper <- function(train, test,
 #' @param sample.fraction See \link[ranger]{ranger}.
 #' @param num.threads See \link[ranger]{ranger}.
 #' @param verbose See \link[ranger]{ranger}.
+#' @param ... Other options (passed to \code{ranger}) 
 #' @return A list with named objects (see description). 
 #' @export
 #' @importFrom ranger ranger 
@@ -223,7 +227,13 @@ ranger_wrapper <- function(train, test,
 #' glm_wrap <- glm_wrapper(train = train, test = test)
 
 glm_wrapper <- function(train, test){
-    glm_fit <- stats::glm(train$Y ~ ., data = train$X, family = binomial())
+    if(!is.data.frame(train$X)){
+      train$X <- data.frame(train$X)
+    }
+    if(!is.data.frame(test$X)){
+      test$X <- data.frame(test$X)
+    }
+    glm_fit <- stats::glm(train$Y ~ ., data = train$X, family = stats::binomial())
     Psi_nBn_0 <- function(x){
       stats::predict(glm_fit, newdata = x, type = "response")
     }
@@ -270,8 +280,8 @@ glm_wrapper <- function(train, test){
 #' # fit stepwise glm
 #' step_wrap <- stepglm_wrapper(train = train, test = test)
 stepglm_wrapper <- function(train, test){
-    glm_full <- stats::glm(train$Y ~ ., data = train$X, family = binomial())
-    glm_fit <- stats::step(stats::glm(train$Y ~ 1, data = train$X, family = binomial()), scope = formula(glm_full), 
+    glm_full <- stats::glm(train$Y ~ ., data = train$X, family = stats::binomial())
+    glm_fit <- stats::step(stats::glm(train$Y ~ 1, data = train$X, family = stats::binomial()), scope = formula(glm_full), 
         direction = "forward", trace = 0, k = 2)
     Psi_nBn_0 <- function(x){
       stats::predict(glm_fit, newdata = x, type = "response")
@@ -313,7 +323,7 @@ stepglm_wrapper <- function(train, test){
 #' @param save_period See \link[xgboost]{xgboost}
 #' @return A list with named objects (see description). 
 #' @export
-#' @importFrom stats glm predict step
+#' @importFrom stats glm predict step model.matrix
 #' @importFrom xgboost xgboost xgb.DMatrix
 #' @examples
 #' # simulate data
@@ -332,7 +342,7 @@ stepglm_wrapper <- function(train, test){
 xgboost_wrapper <- function(test, train, ntrees = 500, 
     max_depth = 4, shrinkage = 0.1, minobspernode = 2, params = list(), 
     nthread = 1, verbose = 0, save_period = NULL){
-    x <- model.matrix(~. - 1, data = train$X)
+    x <- stats::model.matrix(~. - 1, data = train$X)
     xgmat <- xgboost::xgb.DMatrix(data = x, label = train$Y)
     xgboost_fit <- xgboost::xgboost(data = xgmat, objective = "binary:logistic", 
             nrounds = ntrees, max_depth = max_depth, min_child_weight = minobspernode, 

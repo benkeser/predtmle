@@ -1,4 +1,4 @@
 library(testthat)
-library(cvtmleAUC)
+library(predtmle)
 
-test_check("cvtmleAUC")
+test_check("predtmle")

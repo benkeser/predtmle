@@ -19,6 +19,8 @@ prediction algorithm. See TODO: ADD DOCUMENTATION FOR WRITING}
 
 \item{parallel}{A boolean indicating whether prediction algorithms should be 
 trained in parallel. Default to \code{FALSE}.}
+
+\item{...}{Other options (not currently used)}
 }
 \description{
 This estimator is computed by leaving out a pair of one case (\code{Y = 1}) and

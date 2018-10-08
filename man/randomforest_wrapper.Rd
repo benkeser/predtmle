@@ -22,6 +22,8 @@ randomforest_wrapper(train, test, mtry = floor(sqrt(ncol(train$X))),
 \item{maxnodes}{See \link[randomForest]{randomForest}.}
 
 \item{importance}{See \link[randomForest]{randomForest}.}
+
+\item{...}{Other options (passed to \code{randomForest})}
 }
 \value{
 A list with named objects (see description).

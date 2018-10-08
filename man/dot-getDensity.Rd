@@ -26,6 +26,8 @@
 \item{folds}{Cross-validation fold assignments.}
 
 \item{maxDens}{The maximum allowed value for the density.}
+
+\item{...}{Other options (not currently used)}
 }
 \description{
 Function to estimate density needed to evaluate standard errors.

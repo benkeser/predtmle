@@ -17,6 +17,10 @@
 \item{K}{The number of folds}
 
 \item{parallel}{Whether to compute things in parallel using future}
+
+\item{nested_cv}{Is nested CV being used?}
+
+\item{nested_K}{How many folds of nested CV?}
 }
 \value{
 A list of the result of the wrapper executed in each fold

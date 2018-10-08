@@ -32,6 +32,8 @@ ranger_wrapper(train, test, num.trees = 500,
 \item{num.threads}{See \link[ranger]{ranger}.}
 
 \item{verbose}{See \link[ranger]{ranger}.}
+
+\item{...}{Other options (passed to \code{ranger})}
 }
 \value{
 A list with named objects (see description).

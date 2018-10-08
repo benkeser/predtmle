@@ -2,11 +2,13 @@ Package: predtmle
 Title: Small sample estimators of cross-validated prediction metrics
 Version: 1.0.0
 Authors@R: person("David", "Benkeser", email = "benkeser@emory.edu", role = c("aut", "cre"))
-Description: Cross-validated estimates of and inference for prediction metrics based on cross-validated targeted minimum loss-based estimation, estimating equations, and one-step estimation. (TO DO: add citations)
+Description: This package computes cross-validated estimates of prediction metrics based on cross-validated targeted minimum loss-based estimation, estimating equations, and one-step estimation. Also included are confidence intervals about these estimates. (TO DO: add citations)
 Depends: 
 	R (>= 3.2.0),
 	data.table
 Imports:
+	stats,
+	utils,
 	testthat,
 	SuperLearner,
 	cvAUC,
@@ -18,7 +20,7 @@ Imports:
 	ranger,
 	xgboost,
 	assertthat
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0

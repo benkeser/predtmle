@@ -16,6 +16,8 @@ F_nBn_star(psi_x, y, train_pred, train_y, epsilon = 0, tol = 0.001)
 \item{train_y}{Values of Y from training sample}
 
 \item{epsilon}{Vector of fluctuation parameter estimates}
+
+\item{tol}{Truncation level for logistic transformation}
 }
 \value{
 Numeric value of CDF at \code{psi_x}

@@ -1,3 +1,5 @@
+utils::globalVariables(c(":="))
+
 #' Cross-validated area under the receiver operating characteristics curve (AUC)
 #' 
 #' This function computes K-fold cross-validated estimates of the area under
@@ -159,7 +161,7 @@ cv_auc <- function(Y, X, K = 10, learner = "glm_wrapper",
         as.numeric(full_long_data$Y == 0)/(full_long_data$gn) * full_long_data$dFn 
       # fit intercept only model with weights
       suppressWarnings(
-        fluc_mod_0 <- glm(outcome ~ offset(logit_Fn), family = binomial(),
+        fluc_mod_0 <- glm(outcome ~ offset(logit_Fn), family = stats::binomial(),
                           data = full_long_data[full_long_data$Yi == 0,], 
                           weights = full_long_data$targeting_weight_0[full_long_data$Yi == 0],
                           start = 0)
@@ -198,7 +200,7 @@ cv_auc <- function(Y, X, K = 10, learner = "glm_wrapper",
         as.numeric(full_long_data$Y == 1)/(full_long_data$gn) * full_long_data$dFn 
       # fit intercept only model with weights
       suppressWarnings(
-        fluc_mod_1 <- glm(outcome ~ offset(logit_Fn), family = binomial(),
+        fluc_mod_1 <- glm(outcome ~ offset(logit_Fn), family = stats::binomial(),
                           data = full_long_data[full_long_data$Yi == 1,], 
                           weights = full_long_data$targeting_weight_1[full_long_data$Yi == 1],
                           start = 0)
@@ -265,7 +267,7 @@ cv_auc <- function(Y, X, K = 10, learner = "glm_wrapper",
   }else{
     # this is for computing the weird LOO estimator
     regular_cvauc <- tryCatch({
-      cvma::ci.cvAUC_withIC(predictions = unlist(valid_pred_list),
+      ci.cvAUC_withIC(predictions = unlist(valid_pred_list),
                             labels = unlist(valid_label_list))
     }, error = function(e){ return(list(cvAUC = NA, se = NA)) })
   }
@@ -326,7 +328,7 @@ cv_auc <- function(Y, X, K = 10, learner = "glm_wrapper",
 #' 
 #' @importFrom cvAUC AUC cvAUC
 #' @importFrom data.table data.table
-#' @importFrom stats var
+#' @importFrom stats var qnorm binomial
 #' 
 #' @return A list containing the following named elements: 
 #' \item{cvAUC}{Cross-validated area under the curve estimate.}
@@ -383,7 +385,7 @@ ci.cvAUC_withIC <- function(predictions, labels, label.ordering = NULL,
   sighat2 <- mean(unlist(lapply(icOut, stats::var)))
   se <- sqrt(sighat2/n_obs)  
   cvauc <- cvAUC::cvAUC(predictions, labels)$cvAUC
-  z <- qnorm(confidence + (1 - confidence)/2)
+  z <- stats::qnorm(confidence + (1 - confidence)/2)
   ci_cvauc <- c(cvauc - (z * se), cvauc + (z * se))
   ci_cvauc[1] <- ifelse(ci_cvauc[1] < 0, 0, ci_cvauc[1])  #Truncate CI at [0,1]
   ci_cvauc[2] <- ifelse(ci_cvauc[2] > 1, 1, ci_cvauc[2]) 
@@ -395,7 +397,7 @@ ci.cvAUC_withIC <- function(predictions, labels, label.ordering = NULL,
 #' @param predictions A vector, matrix, list, or data frame containing the predictions.
 #' @param labels A vector, matrix, list, or data frame containing the true class labels. Must have the 
 #' same dimensions as \code{predictions}.
-#' @param label.order The default ordering of the classes can be changed by supplying 
+#' @param label.ordering The default ordering of the classes can be changed by supplying 
 #' a vector containing the negative and the positive class label (negative label first, 
 #' positive label second).
 #' @param folds If specified, this must be a vector of fold ids equal in length to \code{predictions} 
@@ -488,9 +490,10 @@ ci.cvAUC_withIC <- function(predictions, labels, label.ordering = NULL,
 #' Helper function for CVTMLE grid search
 #' @param epsilon Fluctuation parameter 
 #' @param fld full_long_data_list
+#' @param tol Tolerance on predictions close to 0 or 1
 #' @return A numeric value of negative log-likelihood
 fluc_mod_optim_0 <- function(epsilon, fld, tol = 1e-3){
-  p_eps <- plogis(fld$logit_Fn + epsilon)
+  p_eps <- stats::plogis(fld$logit_Fn + epsilon)
   p_eps[p_eps == 1] <- 1 - tol
   p_eps[p_eps == 0] <- tol
   loglik <- -sum(fld$targeting_weight_0 * (fld$outcome * log(p_eps) + (1-fld$outcome) * log(1 - p_eps)))
@@ -499,9 +502,10 @@ fluc_mod_optim_0 <- function(epsilon, fld, tol = 1e-3){
 #' Helper function for CVTMLE grid search
 #' @param epsilon Fluctuation parameter 
 #' @param fld full_long_data_list
+#' @param tol Tolerance on predictions close to 0 or 1
 #' @return A numeric value of negative log-likelihood
 fluc_mod_optim_1 <- function(epsilon, fld, tol = 1e-3){
-  p_eps <- plogis(fld$logit_Fn + epsilon)
+  p_eps <- stats::plogis(fld$logit_Fn + epsilon)
   p_eps[p_eps == 1] <- 1 - tol
   p_eps[p_eps == 0] <- tol
   loglik <- -sum(fld$targeting_weight_1 * (fld$outcome * log(p_eps) + (1-fld$outcome) * log(1 - p_eps)))
@@ -538,6 +542,8 @@ fluc_mod_optim_1 <- function(epsilon, fld, tol = 1e-3){
 #' @param auc The value of auc to find root for
 #' @param prediction_list Entry in prediction_list
 #' @param gn Marginal probability of outcome
+#' @param folds Cross-validation folds
+#' @param K Number of CV folds
 #' @return A numeric value of the estimating function evaluated at current
 #' \code{auc} estimate. 
 .estimatingFnNestedCV <- function(auc = 0.5, prediction_list, folds, gn, K){
@@ -588,10 +594,12 @@ fluc_mod_optim_1 <- function(epsilon, fld, tol = 1e-3){
 #' @param train_pred Values of Psi_nBn(X) from training sample
 #' @param train_y Values of Y from training sample
 #' @param epsilon Vector of fluctuation parameter estimates
+#' @param tol Truncation level for logistic transformation
+#' @importFrom stats plogis
 #' @return Numeric value of CDF at \code{psi_x}
 F_nBn_star <- function(psi_x, y, train_pred, train_y, 
                        epsilon = 0, tol = 1e-3){
-  plogis(SuperLearner::trimLogit(mean(train_pred[train_y %in% y] <= psi_x), tol) +
+  stats::plogis(SuperLearner::trimLogit(mean(train_pred[train_y %in% y] <= psi_x), tol) +
           sum(epsilon))
 }
 
@@ -599,16 +607,15 @@ F_nBn_star <- function(psi_x, y, train_pred, train_y,
 #' where the initial distribution is based on cross validation
 #' @param psi_x Value to compute conditional (on Y=y) cdf of learner
 #' @param y Value of Y to condition on 
-#' @param train_pred Values of Psi_nBn(X) from training sample
-#' @param train_y Values of Y from training sample
 #' @param epsilon Vector of fluctuation parameter estimates
 #' @param tol A truncation level when taking logit transformations. 
+#' @param inner_valid_prediction_and_y_list A list of predictions and y's from \code{.getPredictions}.
 #' @return Numeric value of CDF at \code{psi_x}
 F_nBn_star_nested_cv <- function(psi_x, y, inner_valid_prediction_and_y_list, 
                                  epsilon = 0, tol = 1e-3){
   # get cdf estimated in each validation fold
   all_cv_est <- lapply(inner_valid_prediction_and_y_list, function(z){
-    plogis(SuperLearner::trimLogit(mean(z$test_pred[z$inner_test_y %in% y] <= psi_x), tol) +
+    stats::plogis(SuperLearner::trimLogit(mean(z$test_pred[z$inner_test_y %in% y] <= psi_x), tol) +
           sum(epsilon))
   })
   # average over folds
@@ -767,6 +774,7 @@ F_nBn_star_nested_cv <- function(psi_x, y, inner_valid_prediction_and_y_list,
 #' @param epsilon_0 If \code{update = TRUE}, a vector of TMLE fluctuation
 #' parameter estimates used to add the CDF and PDF of Psi(X) to the data set
 #' @param epsilon_1 Ditto above
+#' @param folds Vector of CV folds
 #' @param tol A truncation level when taking logit transformations. 
 #' 
 #' @return A long form data list of a particular set up. Columns are named id 
@@ -1014,7 +1022,9 @@ F_nBn_star_nested_cv <- function(psi_x, y, inner_valid_prediction_and_y_list,
 #' @param X The predictors
 #' @param K The number of folds
 #' @param parallel Whether to compute things in parallel using future
-#' 
+#' @param nested_cv Is nested CV being used?
+#' @param nested_K How many folds of nested CV?
+#' @importFrom utils combn
 #' @return A list of the result of the wrapper executed in each fold
 .getPredictions <- function(learner, Y, X, K = 10, folds, parallel, nested_cv = FALSE,
                             nested_K = K - 1){
@@ -1036,7 +1046,7 @@ F_nBn_star_nested_cv <- function(psi_x, y, inner_valid_prediction_and_y_list,
     valid_folds <- split(seq(K),factor(seq(K)))
   }else{
     if(nested_K == K - 1){
-      combns <- combn(K, 2)
+      combns <- utils::combn(K, 2)
       valid_folds <- c(split(seq(K), factor(seq(K))),
                        split(combns, col(combns)))
     }
@@ -1122,6 +1132,7 @@ F_nBn_star_nested_cv <- function(psi_x, y, inner_valid_prediction_and_y_list,
 #' prediction algorithm. See TODO: ADD DOCUMENTATION FOR WRITING 
 #' @param parallel A boolean indicating whether prediction algorithms should be 
 #' trained in parallel. Default to \code{FALSE}. 
+#' @param ... Other options (not currently used)
 #' @export
 #' @examples
 #' # simulate data
@@ -1209,7 +1220,7 @@ boot_auc <- function(Y, X, B = 500, learner = "glm_wrapper", correct632 = FALSE,
       # compute auc on held-out observations
       oob_idx <- which(!(1:n %in% idx))
       out <- tryCatch({cvAUC::cvAUC(predictions = fit$test_pred[oob_idx],
-                              labels = test_y[oob_idx])$cvAUC}, error = function(e){
+                              labels = Y[oob_idx])$cvAUC}, error = function(e){
                                 return(NA)})
     }
     return(out)

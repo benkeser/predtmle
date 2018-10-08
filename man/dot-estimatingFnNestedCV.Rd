@@ -12,7 +12,11 @@ nested cross-validation}
 
 \item{prediction_list}{Entry in prediction_list}
 
+\item{folds}{Cross-validation folds}
+
 \item{gn}{Marginal probability of outcome}
+
+\item{K}{Number of CV folds}
 }
 \value{
 A numeric value of the estimating function evaluated at current

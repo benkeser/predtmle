@@ -198,6 +198,7 @@ cv_scrnp <- function(Y, X, K = 10, sens = 0.95,
 #' @param sens The sensitivity constraint.
 #' @param gn An estimate of the marginal probability that \code{Y = 1}.
 #' @param quantile_type The type of quantile estimate to use.
+#' @param ... Other options (not currently used)
 #' @importFrom stats quantile
 .getOneFold <- function(x, sens, gn, quantile_type = 8, ...){
   # get quantile 
@@ -229,6 +230,7 @@ cv_scrnp <- function(Y, X, K = 10, sens = 0.95,
 #' @param sens The sensitivity constraint.
 #' @param gn The marginal probability that \code{Y = 1}.
 #' @param quantile_type The type of quantile estimate to use.
+#' @param ... Other options (not currently used)
 .getCVEstimator <- function(prediction_list, sens, gn, quantile_type = 8, ...){
   allFolds <- lapply(prediction_list, .getOneFold, sens = sens, gn = gn,
                      quantile_type = quantile_type)
@@ -294,6 +296,7 @@ cv_scrnp <- function(Y, X, K = 10, sens = 0.95,
 #' @param prediction_list Properly formatted list of predictions.
 #' @param folds Cross-validation fold assignments.
 #' @param maxDens The maximum allowed value for the density. 
+#' @param ... Other options (not currently used)
 #' @importFrom np npudensbw npudens
 #' @importFrom stats predict
 #' @importFrom bde bde

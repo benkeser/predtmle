@@ -14,6 +14,8 @@
 \item{gn}{The marginal probability that \code{Y = 1}.}
 
 \item{quantile_type}{The type of quantile estimate to use.}
+
+\item{...}{Other options (not currently used)}
 }
 \description{
 Helper function to turn prediction_list into CV estimate of SCRNP
