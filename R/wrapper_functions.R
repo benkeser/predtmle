@@ -26,6 +26,8 @@
 #' @importFrom SuperLearner SuperLearner 
 #' @importFrom stats predict
 #' @examples
+#' # load super learner package
+#' library(SuperLearner)
 #' # simulate data
 #' Q0 <- function(x){ plogis(x) }
 #' # make list of training data
@@ -42,7 +44,6 @@
 superlearner_wrapper <- function(train, test,
                                  SL.library = c("SL.mean"), 
                                  ...){
-    library(SuperLearner)
     sl_fit <- SuperLearner::SuperLearner(Y = train$Y, 
                                          X = train$X, SL.library = SL.library,
                                          newX = rbind(test$X,train$X),

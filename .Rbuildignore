@@ -1,6 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
+^\.travis-tool\.sh\.cmd$
 ^appveyor\.yml$
 ^codecov\.yml$
 ^_pkgdown\.yml$

@@ -4,7 +4,7 @@ test_that("wrappers work", {
 	p <- 1
 	X <- data.frame(matrix(rnorm(n*p), nrow = n, ncol = p))
 	Y <- rbinom(n, 1, plogis(X[,1]))
-
+	library(SuperLearner)
 	test <- train <- list(X = X, Y = Y)
 	test_sl <- superlearner_wrapper(train, test)
 	expect_true(all(c("test_pred","train_pred","model","train_y","test_y") %in% names(test_sl)))

@@ -38,6 +38,8 @@ methodology. We refer readers to the original package's documentation for more
 details.
 }
 \examples{
+# load super learner package
+library(SuperLearner)
 # simulate data
 Q0 <- function(x){ plogis(x) }
 # make list of training data
