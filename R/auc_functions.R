@@ -1022,6 +1022,7 @@ F_nBn_star_nested_cv <- function(psi_x, y, inner_valid_prediction_and_y_list,
 #' @param X The predictors
 #' @param K The number of folds
 #' @param parallel Whether to compute things in parallel using future
+#' @param folds Vector of CV fold assignments
 #' @param nested_cv Is nested CV being used?
 #' @param nested_K How many folds of nested CV?
 #' @importFrom utils combn
