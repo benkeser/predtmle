@@ -41,7 +41,7 @@ utils::globalVariables(c(":="))
 #' @importFrom Rdpack reprompt
 #' @importFrom assertthat assert_that
 #' @export
-#' @return A list
+#' @return A list TO DO: More documentation here
 #' @examples
 #' n <- 200
 #' p <- 10
@@ -1185,13 +1185,15 @@ lpo_auc <- function(Y, X, learner = "glm_wrapper",
 #' prediction algorithm. See TODO: ADD DOCUMENTATION FOR WRITING 
 #' @param correct632 A boolean indicating whether to use the .632 correction.
 #' @param ... Other options, not currently used. 
+#' @return A list with \code{$auc} as the bootstrap-corrected AUC estimate
 #' @export
 #' @examples 
 #' # simulate data
 #' X <- data.frame(x1 = rnorm(50))
 #' Y <- rbinom(50, 1, plogis(X$x1))
-#' # compute lpo_auc for logistic regression
-#' boot <- boot_auc(Y = Y, X = X, learner = "glm_wrapper")
+#' # compute lpo_auc for logistic regression 
+#' # use small B for fast run
+#' boot <- boot_auc(Y = Y, X = X, B = 25, learner = "glm_wrapper")
 #' 
 boot_auc <- function(Y, X, B = 500, learner = "glm_wrapper", correct632 = FALSE, ...){
   n <- length(Y)

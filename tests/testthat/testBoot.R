@@ -27,8 +27,8 @@ test_that("scrnp boot functions", {
 
   boot1 <- boot_scrnp(Y = Y, X = X, B = 10)
   boot2 <- boot_scrnp(Y = Y, X = X, B = 10, correct632 = TRUE)
-  expect_true(is.numeric(boot1$auc))
-  expect_true(is.numeric(boot2$auc))
+  expect_true(is.numeric(boot1$scrnp))
+  expect_true(is.numeric(boot2$scrnp))
 })
 
 

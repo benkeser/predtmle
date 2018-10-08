@@ -23,6 +23,9 @@ prediction algorithm. See TODO: ADD DOCUMENTATION FOR WRITING}
 
 \item{...}{Other options, not currently used.}
 }
+\value{
+A list with \code{$scrnp} the bootstrap-corrected estimate of SCRNP.
+}
 \description{
 This estimator is computed by re-sampling with replacement (i.e., bootstrap
 sampling) from the data. The SCRNP is computed for the learner trained on the 
@@ -36,6 +39,7 @@ and the estimated bias.
 # simulate data
 X <- data.frame(x1 = rnorm(50))
 Y <- rbinom(50, 1, plogis(X$x1))
-# compute lpo_auc for logistic regression
-boot <- boot_auc(Y = Y, X = X, learner = "glm_wrapper")
+# compute bootstrap estimate of scrnp for logistic regression
+# use small B for fast run
+boot <- boot_scrnp(Y = Y, X = X, B = 25, learner = "glm_wrapper")
 }

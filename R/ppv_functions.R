@@ -32,7 +32,7 @@
 #' @importFrom cvAUC ci.cvAUC
 #' @importFrom stats uniroot
 #' @export
-#' @return A list
+#' @return A list TO DO: more documentation here. 
 #' @examples
 #' n <- 200
 #' p <- 10
@@ -502,13 +502,15 @@ cv_scrnp <- function(Y, X, K = 10, sens = 0.95,
 #' @param sens The sensitivity constraint to use. 
 #' @param correct632 A boolean indicating whether to use the .632 correction.
 #' @param ... Other options, not currently used. 
+#' @return A list with \code{$scrnp} the bootstrap-corrected estimate of SCRNP.
 #' @export
 #' @examples 
 #' # simulate data
 #' X <- data.frame(x1 = rnorm(50))
 #' Y <- rbinom(50, 1, plogis(X$x1))
-#' # compute lpo_auc for logistic regression
-#' boot <- boot_auc(Y = Y, X = X, learner = "glm_wrapper")
+#' # compute bootstrap estimate of scrnp for logistic regression
+#' # use small B for fast run
+#' boot <- boot_scrnp(Y = Y, X = X, B = 25, learner = "glm_wrapper")
 #' @export
 boot_scrnp <- function(Y, X, B = 200, learner = "glm_wrapper", 
                        sens = 0.95, correct632 = FALSE, ...){
@@ -558,7 +560,7 @@ boot_scrnp <- function(Y, X, B = 200, learner = "glm_wrapper",
     # weighted estimate
     corrected_est <- (1 - w)*full_est + w * scrnp_b
   }
-  return(list(corrected_est = corrected_est))
+  return(list(scrnp = corrected_est))
 }
 
 # MC averaged functions commented out for now. 

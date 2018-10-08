@@ -43,7 +43,7 @@ that has a format compatible with \code{cvauc}.}
 \item{...}{Other arguments, not currently used}
 }
 \value{
-A list
+A list TO DO: More documentation here
 }
 \description{
 This function computes K-fold cross-validated estimates of the area under

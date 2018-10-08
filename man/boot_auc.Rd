@@ -21,6 +21,9 @@ prediction algorithm. See TODO: ADD DOCUMENTATION FOR WRITING}
 
 \item{...}{Other options, not currently used.}
 }
+\value{
+A list with \code{$auc} as the bootstrap-corrected AUC estimate
+}
 \description{
 This estimator is computed by re-sampling with replacement (i.e., bootstrap
 sampling) from the data. The AUC is computed for the learner trained on the 
@@ -34,7 +37,8 @@ and the estimated bias.
 # simulate data
 X <- data.frame(x1 = rnorm(50))
 Y <- rbinom(50, 1, plogis(X$x1))
-# compute lpo_auc for logistic regression
-boot <- boot_auc(Y = Y, X = X, learner = "glm_wrapper")
+# compute lpo_auc for logistic regression 
+# use small B for fast run
+boot <- boot_auc(Y = Y, X = X, B = 25, learner = "glm_wrapper")
 
 }

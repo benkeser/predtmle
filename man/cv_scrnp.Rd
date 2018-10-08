@@ -50,7 +50,7 @@ that has a format compatible with \code{cvauc}.}
 \item{...}{Other arguments, not currently used}
 }
 \value{
-A list
+A list TO DO: more documentation here.
 }
 \description{
 TO DO: Add description
