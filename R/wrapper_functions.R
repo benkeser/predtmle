@@ -265,7 +265,7 @@ glm_wrapper <- function(train, test){
 #' @param test A list with named objects \code{Y} and \code{X} (see description).
 #' @return A list with named objects (see description). 
 #' @export
-#' @importFrom stats glm predict step
+#' @importFrom stats glm predict step formula
 #' @examples
 #' # simulate data
 #' Q0 <- function(x){ plogis(x) }
@@ -281,7 +281,7 @@ glm_wrapper <- function(train, test){
 #' step_wrap <- stepglm_wrapper(train = train, test = test)
 stepglm_wrapper <- function(train, test){
     glm_full <- stats::glm(train$Y ~ ., data = train$X, family = stats::binomial())
-    glm_fit <- stats::step(stats::glm(train$Y ~ 1, data = train$X, family = stats::binomial()), scope = formula(glm_full), 
+    glm_fit <- stats::step(stats::glm(train$Y ~ 1, data = train$X, family = stats::binomial()), scope = stats::formula(glm_full), 
         direction = "forward", trace = 0, k = 2)
     Psi_nBn_0 <- function(x){
       stats::predict(glm_fit, newdata = x, type = "response")

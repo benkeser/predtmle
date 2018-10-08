@@ -14,7 +14,7 @@ Problem which can be solved:
 * The best binarization of classes for each attribute.
 * Evaluation of risk to be drug consumer for each drug.
 Detailed description of database and process of data quantification are presented in E. Fehrman, A. K. Muhammad, E. M. Mirkes, V. Egan and A. N. Gorban, "The Five Factor Model of personality and evaluation of drug consumption risk.," arXiv [Web Link], 2015
-Paper above solve binary classification problem for all drugs. For most of drugs sensitivity and specificity are greater than 75%.}
+Paper above solve binary classification problem for all drugs. For most of drugs sensitivity and specificity are greater than 75\%.}
 \description{
 "Drug consumption (quantified) Data Set" from UCI Machine Learning Repository
 \code{outcome} is heroin use 
@@ -27,7 +27,7 @@ Problem which can be solved:
 * The best binarization of classes for each attribute.
 * Evaluation of risk to be drug consumer for each drug.
 Detailed description of database and process of data quantification are presented in E. Fehrman, A. K. Muhammad, E. M. Mirkes, V. Egan and A. N. Gorban, "The Five Factor Model of personality and evaluation of drug consumption risk.," arXiv [Web Link], 2015
-Paper above solve binary classification problem for all drugs. For most of drugs sensitivity and specificity are greater than 75%.
+Paper above solve binary classification problem for all drugs. For most of drugs sensitivity and specificity are greater than 75\%.
 }
 \references{
 \url{https://archive.ics.uci.edu/ml/datasets/Drug+consumption+\%28quantified\%29}
