@@ -61,7 +61,7 @@ the remaining fold
 \examples{
 n <- 200
 p <- 10
-X <- matrix(rnorm(n*p), nrow = n, ncol = p)
+X <- data.frame(matrix(rnorm(n*p), nrow = n, ncol = p))
 Y <- rbinom(n, 1, plogis(X[,1] + X[,10]))
 fit <- cv_auc(Y = Y, X = X, K = 5, learner = "glm_wrapper")
 }
