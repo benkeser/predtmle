@@ -13,11 +13,17 @@ test_that("AUC returns numerics", {
   set.seed(123)
   fit2 <- cv_auc(Y = Y, X = data.frame(X), K = 3, nested_cv = TRUE, nested_K = 2, 
                       learner = "glm_wrapper")
+  # try with nested cv with nested_K != K - 1
+  set.seed(123)
+  fit3 <- cv_auc(Y = Y, X = data.frame(X), K = 3, nested_cv = TRUE, nested_K = 3, 
+                      learner = "glm_wrapper")
   expect_equal(fit1$est_empirical, fit2$est_empirical)
   expect_true(is.numeric(fit1$est_cvtmle))
   expect_true(!is.na(fit1$est_cvtmle))
   expect_true(is.numeric(fit2$est_cvtmle))
   expect_true(!is.na(fit2$est_cvtmle))
+  expect_true(is.numeric(fit3$est_cvtmle))
+  expect_true(!is.na(fit3$est_cvtmle))
 })
 
 # test_that("AUC returns 0.5 for SL.mean", {
