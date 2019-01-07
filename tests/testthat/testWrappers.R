@@ -25,7 +25,8 @@ test_that("wrappers work", {
 		"stepglm",
 		"xgboost",
 		"dbarts",
-		"superlearner"
+		"superlearner",
+		"glmnet"
 	)
 	for(wrap in pkg_wrappers){
 		check_wrapper(paste0(wrap,"_wrapper"), test = test, train = train)
