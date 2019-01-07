@@ -19,6 +19,7 @@ Imports:
 	randomForest,
 	ranger,
 	xgboost,
+	dbarts,
 	assertthat
 License: MIT + file LICENSE
 Encoding: UTF-8
