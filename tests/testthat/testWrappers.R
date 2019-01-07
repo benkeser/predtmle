@@ -1,7 +1,7 @@
 test_that("wrappers work", {
 	set.seed(123)
 	n <- 50
-	p <- 1
+	p <- 2
 	X <- data.frame(matrix(rnorm(n*p), nrow = n, ncol = p))
 	Y <- rbinom(n, 1, plogis(X[,1]))
 	test <- train <- list(X = X, Y = Y)
