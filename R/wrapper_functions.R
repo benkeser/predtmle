@@ -433,7 +433,7 @@ dbarts_wrapper <- function(test, train, sigest = NA, sigdf = 3,
         numcut = numcut, printcutoffs = printcutoffs, nthread = nthread, 
         keepcall = keepcall, verbose = verbose)
 
-    pred <- colMeans(stats::pnorm(model$yhat.test))
+    pred <- colMeans(stats::pnorm(bart_fit$yhat.test))
     test_pred <- pred[seq_len(n_test)]
     train_pred <- pred[(length(n_test)+1):length(pred)]
 
