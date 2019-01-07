@@ -20,6 +20,7 @@ Imports:
 	ranger,
 	xgboost,
 	dbarts,
+	glmnet,
 	assertthat
 License: MIT + file LICENSE
 Encoding: UTF-8
