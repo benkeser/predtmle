@@ -58,6 +58,68 @@ superlearner_wrapper <- function(train, test,
                 model = sl_fit, train_y = train$Y, test_y = test$Y))
 }
 
+#' Wrapper for fitting a lasso using package \code{glmnet}.
+#' 
+#' Compatible learner wrappers for this package should have a specific format.
+#' Namely they should take as input a list called \code{train} that contains
+#' named objects \code{$Y} and \code{$X}, that contain, respectively, the outcomes
+#' and predictors in a particular training fold. Other options may be passed in
+#' to the function as well. The function must output a list with the following
+#' named objects: \code{test_pred} = predictions of \code{test$Y} based on the learner
+#' fit using \code{train$X}; \code{train_pred} = prediction of \code{train$Y} based 
+#' on the learner fit using \code{train$X}; \code{model} = the fitted model (only 
+#' necessary if you desire to look at this model later, not used for internal 
+#' computations); \code{train_y} = a copy of \code{train$Y}; \code{test_y} = a copy
+#' of \code{test$Y}. 
+#' 
+#' This particular wrapper implements \link[glmnet]{glmnet}. We refer readers to the original package's documentation for more
+#' details. 
+#' 
+#' @param train A list with named objects \code{Y} and \code{X} (see description).
+#' @param test A list with named objects \code{Y} and \code{X} (see description).
+#' @param alpha See \link[glmnet]{glmnet} for further description. 
+#' @param nfolds See \link[glmnet]{glmnet} for further description.  
+#' @param nlambda See \link[glmnet]{glmnet} for further description.  
+#' @param use_min See \link[glmnet]{glmnet} for further description. 
+#' @param loss See \link[glmnet]{glmnet} for further description. 
+#' @param ... Other options (passed to \code{SuperLearner}) 
+#' @return A list with named objects (see description). 
+#' @export
+#' @importFrom glmnet cv.glmnet 
+#' @examples
+#' # load super learner package
+#' library(glmnet)
+#' # simulate data
+#' Q0 <- function(x){ plogis(x) }
+#' # make list of training data
+#' train_X <- data.frame(x1 = runif(50))
+#' train_Y <- rbinom(50, 1, Q0(train_X$x1))
+#' train <- list(Y = train_Y, X = train_X)
+#' # make list of test data
+#' test_X <- data.frame(x1 = runif(50))
+#' test_Y <- rbinom(50, 1, Q0(train_X$x1))
+#' test <- list(Y = test_Y, X = test_X)
+#' # fit super learner 
+#' glmnet_wrap <- glmnet_wrapper(train = train, test = test)
+
+glmnet_wrapper <- function(train, test,
+                           alpha = 1, nfolds = 5, 
+                           nlambda = 100, use_min = TRUE, 
+                           loss = "deviance"){
+  
+  glmnet_fit <- glmnet::cv.glmnet(x = train$X, y = train$Y, 
+        lambda = NULL, type.measure = loss, nfolds = nfolds, 
+        family = "binomial", alpha = alpha, nlambda = nlambda)
+
+  test_pred <- predict(fitCV, newx = test$X, type = "response", s = ifelse(useMin, 
+      "lambda.min", "lambda.1se"))
+  test_pred <- predict(fitCV, newx = train$X, type = "response", s = ifelse(useMin, 
+      "lambda.min", "lambda.1se"))
+
+    return(list(test_pred = test_pred, train_pred = train_pred,
+                model = glmnet_fit, train_y = train$Y, test_y = test$Y))
+}
+
 #' Wrapper for fitting a random forest using \link[randomForest]{randomForest}.
 #' 
 #' Compatible learner wrappers for this package should have a specific format.
@@ -435,7 +497,7 @@ dbarts_wrapper <- function(test, train, sigest = NA, sigdf = 3,
 
     pred <- colMeans(stats::pnorm(bart_fit$yhat.test))
     test_pred <- pred[seq_len(n_test)]
-    train_pred <- pred[(length(n_test)+1):length(pred)]
+    train_pred <- pred[(n_test+1):length(pred)]
 
     return(list(test_pred = test_pred, train_pred = train_pred,
                 model = bart_fit, train_y = train$Y, test_y = test$Y))
