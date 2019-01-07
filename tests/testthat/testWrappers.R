@@ -8,9 +8,9 @@ test_that("wrappers work", {
 	library(SuperLearner)
 
 	# define a function that 
-	check_wrapper <- function(wrapper, args = list(train = train, 
-	                                               test = test)){
-		test <- do.call(wrapper, train, test)
+	check_wrapper <- function(wrapper, test, train){
+		test <- do.call(wrapper, 
+		                args = list(train = train, test = test))
 		expect_true(all(c("test_pred","train_pred","model","train_y","test_y") %in% names(test)))
 		expect_true(is.numeric(test$test_pred))
 		expect_true(is.numeric(test$train_pred))
@@ -30,5 +30,5 @@ test_that("wrappers work", {
 	for(wrap in pkg_wrappers){
 		check_wrapper(paste0(wrap,"_wrapper"), test = test, train = train)
 	}
-	
+
 })

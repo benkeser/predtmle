@@ -380,24 +380,24 @@ xgboost_wrapper <- function(test, train, ntrees = 500,
 #' 
 #' @param train A list with named objects \code{Y} and \code{X} (see description).
 #' @param test A list with named objects \code{Y} and \code{X} (see description).
-#' @param sigest See \link[dbarts][dbarts]
-#' @param sigquant See \link[dbarts][dbarts]
-#' @param k See \link[dbarts][dbarts]
-#' @param power See \link[dbarts][dbarts]
-#' @param base See \link[dbarts][dbarts]
-#' @param binaryOffset See \link[dbarts][dbarts]
-#' @param ntree See \link[dbarts][dbarts]
-#' @param ndpost See \link[dbarts][dbarts]
-#' @param nskip See \link[dbarts][dbarts]
-#' @param printevery See \link[dbarts][dbarts]
-#' @param keepevery See \link[dbarts][dbarts]
-#' @param keeptrainfits See \link[dbarts][dbarts]
-#' @param usequants See \link[dbarts][dbarts]
-#' @param numcut See \link[dbarts][dbarts]
-#' @param printcutoffs See \link[dbarts][dbarts]
-#' @param nthread See \link[dbarts][dbarts]
-#' @param keepcall See \link[dbarts][dbarts]
-#' @param verbose See \link[dbarts][dbarts]
+#' @param sigest See \link[dbarts]{dbarts}
+#' @param sigquant See \link[dbarts]{dbarts}
+#' @param k See \link[dbarts]{dbarts}
+#' @param power See \link[dbarts]{dbarts}
+#' @param base See \link[dbarts]{dbarts}
+#' @param binaryOffset See \link[dbarts]{dbarts}
+#' @param ntree See \link[dbarts]{dbarts}
+#' @param ndpost See \link[dbarts]{dbarts}
+#' @param nskip See \link[dbarts]{dbarts}
+#' @param printevery See \link[dbarts]{dbarts}
+#' @param keepevery See \link[dbarts]{dbarts}
+#' @param keeptrainfits See \link[dbarts]{dbarts}
+#' @param usequants See \link[dbarts]{dbarts}
+#' @param numcut See \link[dbarts]{dbarts}
+#' @param printcutoffs See \link[dbarts]{dbarts}
+#' @param nthread See \link[dbarts]{dbarts}
+#' @param keepcall See \link[dbarts]{dbarts}
+#' @param verbose See \link[dbarts]{dbarts}
 #' @return A list with named objects (see description). 
 #' @export
 #' @importFrom dbarts bart 

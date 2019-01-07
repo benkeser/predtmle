@@ -15,41 +15,41 @@ dbarts_wrapper(test, train, sigest = NA, sigdf = 3, sigquant = 0.9,
 
 \item{train}{A list with named objects \code{Y} and \code{X} (see description).}
 
-\item{sigest}{See \link[dbarts][dbarts]}
+\item{sigest}{See \link[dbarts]{dbarts}}
 
-\item{sigquant}{See \link[dbarts][dbarts]}
+\item{sigquant}{See \link[dbarts]{dbarts}}
 
-\item{k}{See \link[dbarts][dbarts]}
+\item{k}{See \link[dbarts]{dbarts}}
 
-\item{power}{See \link[dbarts][dbarts]}
+\item{power}{See \link[dbarts]{dbarts}}
 
-\item{base}{See \link[dbarts][dbarts]}
+\item{base}{See \link[dbarts]{dbarts}}
 
-\item{binaryOffset}{See \link[dbarts][dbarts]}
+\item{binaryOffset}{See \link[dbarts]{dbarts}}
 
-\item{ntree}{See \link[dbarts][dbarts]}
+\item{ntree}{See \link[dbarts]{dbarts}}
 
-\item{ndpost}{See \link[dbarts][dbarts]}
+\item{ndpost}{See \link[dbarts]{dbarts}}
 
-\item{nskip}{See \link[dbarts][dbarts]}
+\item{nskip}{See \link[dbarts]{dbarts}}
 
-\item{printevery}{See \link[dbarts][dbarts]}
+\item{printevery}{See \link[dbarts]{dbarts}}
 
-\item{keepevery}{See \link[dbarts][dbarts]}
+\item{keepevery}{See \link[dbarts]{dbarts}}
 
-\item{keeptrainfits}{See \link[dbarts][dbarts]}
+\item{keeptrainfits}{See \link[dbarts]{dbarts}}
 
-\item{usequants}{See \link[dbarts][dbarts]}
+\item{usequants}{See \link[dbarts]{dbarts}}
 
-\item{numcut}{See \link[dbarts][dbarts]}
+\item{numcut}{See \link[dbarts]{dbarts}}
 
-\item{printcutoffs}{See \link[dbarts][dbarts]}
+\item{printcutoffs}{See \link[dbarts]{dbarts}}
 
-\item{nthread}{See \link[dbarts][dbarts]}
+\item{nthread}{See \link[dbarts]{dbarts}}
 
-\item{keepcall}{See \link[dbarts][dbarts]}
+\item{keepcall}{See \link[dbarts]{dbarts}}
 
-\item{verbose}{See \link[dbarts][dbarts]}
+\item{verbose}{See \link[dbarts]{dbarts}}
 }
 \value{
 A list with named objects (see description).
