@@ -17,6 +17,8 @@ dbarts_wrapper(test, train, sigest = NA, sigdf = 3, sigquant = 0.9,
 
 \item{sigest}{See \link[dbarts]{dbarts}}
 
+\item{sigdf}{See \link[dbarts]{dbarts}}
+
 \item{sigquant}{See \link[dbarts]{dbarts}}
 
 \item{k}{See \link[dbarts]{dbarts}}

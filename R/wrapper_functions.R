@@ -85,7 +85,8 @@ superlearner_wrapper <- function(train, test,
 #' @param ... Other options (passed to \code{SuperLearner}) 
 #' @return A list with named objects (see description). 
 #' @export
-#' @importFrom glmnet cv.glmnet 
+#' @importFrom glmnet cv.glmnet predict.cv.glmnet predict.glmnet
+#' @importFrom stats model.matrix
 #' @examples
 #' # load super learner package
 #' library(glmnet)
@@ -107,13 +108,16 @@ glmnet_wrapper <- function(train, test,
                            nlambda = 100, use_min = TRUE, 
                            loss = "deviance"){
   
-  glmnet_fit <- glmnet::cv.glmnet(x = train$X, y = train$Y, 
+  design_train_X <- model.matrix(~ -1 + ., train$X)
+  design_test_X <- model.matrix(~ -1 + ., test$X)
+
+  glmnet_fit <- glmnet::cv.glmnet(x = design_train_X, y = train$Y, 
         lambda = NULL, type.measure = loss, nfolds = nfolds, 
         family = "binomial", alpha = alpha, nlambda = nlambda)
 
-  test_pred <- predict(fitCV, newx = test$X, type = "response", s = ifelse(useMin, 
+  test_pred <- predict(glmnet_fit, newx = design_test_X, type = "response", s = ifelse(use_min, 
       "lambda.min", "lambda.1se"))
-  test_pred <- predict(fitCV, newx = train$X, type = "response", s = ifelse(useMin, 
+  train_pred <- predict(glmnet_fit, newx = design_train_X, type = "response", s = ifelse(use_min, 
       "lambda.min", "lambda.1se"))
 
     return(list(test_pred = test_pred, train_pred = train_pred,
@@ -444,6 +448,7 @@ xgboost_wrapper <- function(test, train, ntrees = 500,
 #' @param test A list with named objects \code{Y} and \code{X} (see description).
 #' @param sigest See \link[dbarts]{dbarts}
 #' @param sigquant See \link[dbarts]{dbarts}
+#' @param sigdf See \link[dbarts]{dbarts}
 #' @param k See \link[dbarts]{dbarts}
 #' @param power See \link[dbarts]{dbarts}
 #' @param base See \link[dbarts]{dbarts}
