@@ -524,8 +524,12 @@ boot_scrnp <- function(Y, X, B = 200, learner = "glm_wrapper",
     idx <- sample(seq_len(n), replace = TRUE)
     train_Y <- Y[idx]
     train_X <- X[idx, , drop = FALSE]
+    tryCatch({
     fit <- do.call(learner, args=list(train = list(Y = train_Y, X = train_X),
                                       test = list(Y = Y, X = X)))
+    }, error = function(e){
+      return(NA)
+    })
     if(!correct632){
       train_c0 <- quantile(fit$train_pred[fit$train_y == 1], p = 1 - sens)
       test_c0 <- quantile(fit$test_pred[fit$test_y == 1], p = 1 - sens)
