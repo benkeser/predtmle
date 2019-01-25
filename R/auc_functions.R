@@ -1208,28 +1208,32 @@ boot_auc <- function(Y, X, B = 500, learner = "glm_wrapper", correct632 = FALSE,
     idx <- sample(seq_len(n), replace = TRUE)
     train_y <- Y[idx]
     train_X <- X[idx, , drop = FALSE]
-    tryCatch({
-    fit <- do.call(learner, args=list(train = list(Y = train_y, X = train_X),
+    fit <- tryCatch({
+      do.call(learner, args=list(train = list(Y = train_y, X = train_X),
                                       test = list(Y = Y, X = X)))
     }, error = function(e){
       return(NA)
     })
-    if(!correct632){
-      train_cvauc <- tryCatch({cvAUC::cvAUC(predictions = fit$train_pred,
-                              labels = train_y)$cvAUC}, error = function(e){
-                                return(NA)})
-      test_cvauc <- tryCatch({cvAUC::cvAUC(predictions = fit$test_pred,
-                              labels = Y)$cvAUC}, error = function(e){
-                                return(NA)})
-      out <- train_cvauc - test_cvauc
+    if(!(class(fit) == "logical")){
+      if(!correct632){
+        train_cvauc <- tryCatch({cvAUC::cvAUC(predictions = fit$train_pred,
+                                labels = train_y)$cvAUC}, error = function(e){
+                                  return(NA)})
+        test_cvauc <- tryCatch({cvAUC::cvAUC(predictions = fit$test_pred,
+                                labels = Y)$cvAUC}, error = function(e){
+                                  return(NA)})
+        out <- train_cvauc - test_cvauc
+      }else{
+        # compute auc on held-out observations
+        oob_idx <- which(!(1:n %in% idx))
+        out <- tryCatch({cvAUC::cvAUC(predictions = fit$test_pred[oob_idx],
+                                labels = Y[oob_idx])$cvAUC}, error = function(e){
+                                  return(NA)})
+      }
+      return(out)
     }else{
-      # compute auc on held-out observations
-      oob_idx <- which(!(1:n %in% idx))
-      out <- tryCatch({cvAUC::cvAUC(predictions = fit$test_pred[oob_idx],
-                              labels = Y[oob_idx])$cvAUC}, error = function(e){
-                                return(NA)})
+      return(NA)
     }
-    return(out)
   }
   all_boot <- replicate(B, one_boot(Y = Y, X = X, n = n, correct632 = correct632))
   if(!correct632){
