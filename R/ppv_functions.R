@@ -550,17 +550,17 @@ boot_scrnp <- function(Y, X, B = 200, learner = "glm_wrapper",
   all_boot <- replicate(B, one_boot(Y = Y, X = X, n = n, correct632 = correct632))
   
   if(!correct632){  
-    mean_optimism <- mean(all_boot)
+    mean_optimism <- mean(all_boot, na.rm = TRUE)
     corrected_est <- full_est - mean_optimism
   }else{
-    scrnp_b <- mean(all_boot)
+    scrnp_b <- mean(all_boot, na.rm = TRUE)
     # first copy each prediction n times
     long_pred <- rep(full_fit$test_pred, each = n)
     # now copy observed outcomes n times 
     long_y <- rep(Y, n)
     # now compute quantile
-    long_c0 <- quantile(long_pred[long_y == 1], p = 1 - sens)
-    g <- mean(long_pred <= long_c0)
+    long_c0 <- quantile(long_pred[long_y == 1], p = 1 - sens, na.rm = TRUE)
+    g <- mean(long_pred <= long_c0, na.rm = TRUE)
     # relative overfitting rate
     R <- (scrnp_b - full_est)/(g - full_est)
     # 632 weight
